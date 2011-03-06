@@ -23,7 +23,7 @@ LINE_NUMBER = int(os.environ.get('TM_LINE_NUMBER', -1))
 SCOPE = os.environ.get('TM_SCOPE', None)
 CURRENT_WORD = os.environ.get('TM_CURRENT_WORD', None)
 DIALOG = os.environ.get('DIALOG', None)
-
+PYTHONPATH = os.environ.get('PYTHONPATH', None)
 
 def exit_discard():
     sys.exit(200)
@@ -69,4 +69,29 @@ def exit_create_new_document(out = None):
     if out:
         sys.stdout.write(out)
     sys.exit(207)
+
+
+def go_to(options = {}):
+    if 'file' in options:
+        default_line = 1
+    else:
+        default_line = LINE_NUMBER
+    
+    defaults = {
+        'file': FILEPATH,
+        'line': default_line,
+        'column': 1
+    }
+    defaults.update(options)
+    options = defaults
+    
+    command = "txmt://open?"
+    if 'file' in options:
+        command = "%surl=file://%s&" % (command, options['file'])
+    command = "%sline=%s&column=%s" % (command, options['line'], options['column'])
+    command = 'open %s' % sh_escape(command)
+
+    import subprocess
+    process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+    process.wait()
 

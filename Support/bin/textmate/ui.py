@@ -3,6 +3,8 @@ import tempfile
 import plistlib
 import subprocess
 import textmate
+from dialog import get_string
+from dialog import menu
 
 # TODO: rewrite this as pydoc
 # Interactive Code Completion Selector
@@ -67,7 +69,7 @@ def complete(choices, options = {}):
         f.seek(0)
         
         command = ' '.join(command).strip()
-
+        
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         process.stdin.write(f.read())
         process.stdin.close()

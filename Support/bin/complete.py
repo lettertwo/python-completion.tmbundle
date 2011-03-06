@@ -3,16 +3,12 @@
 import sys
 import textmate
 from textmate import ui
+from utils import get_project
 
-# Import rope modules
 try:
-    from rope.base.project import Project
-    try:
-        from rope.contrib import codeassist
-    except:
-        textmate.exit_show_tool_tip('Cannot find rope.contrib.codeassist. Rope may need to be updated.')
+    from rope.contrib import codeassist
 except:
-    textmate.exit_show_tool_tip('Rope module not found!')
+    textmate.exit_show_tool_tip('Rope module not found, or is out of date!')
 
 def main():
     # TODO: Determine if this is necessary. Can we still provide basic completion in a 'standalone' file?
@@ -21,11 +17,9 @@ def main():
 
     source = sys.stdin.read()
 
-    #from rope.contrib import autoimport
-    project = Project(textmate.PROJECT_DIRECTORY)
-    #autoimport = autoimport.AutoImport(project)
+    project = get_project()
+    
     resource = project.get_resource(textmate.FILEPATH.replace(textmate.PROJECT_DIRECTORY, '')[1:])
-    #project.validate(self.project_path)
     caret_index = source.find(textmate.CURRENT_LINE) + textmate.LINE_INDEX
 
     current_word = textmate.current_word(r"[a-zA-Z_]*", 'both')
