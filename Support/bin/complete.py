@@ -1,26 +1,53 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import sys
+import re
 import textmate
 from textmate import ui
 from utils import get_project
-
-try:
-    from rope.contrib import codeassist
-except:
-    textmate.exit_show_tool_tip('Rope module not found, or is out of date!')
+from utils import get_auto_import
 
 def main():
     # TODO: Determine if this is necessary. Can we still provide basic completion in a 'standalone' file?
     if textmate.PROJECT_DIRECTORY is None:
         textmate.exit_show_tool_tip('No completions.')
 
-    source = sys.stdin.read()
+    if re.match(r'^(from|import)\s+.*', textmate.CURRENT_LINE):
+        complete_import()
+    else:
+        complete()
 
+
+def complete_import():
     project = get_project()
+    autoimport = get_auto_import(project)
     
-    resource = project.get_resource(textmate.FILEPATH.replace(textmate.PROJECT_DIRECTORY, '')[1:])
+    current_word = textmate.current_word(r"[a-zA-Z_]*", 'both')
+    
+    proposals = autoimport.import_assist(current_word)
+
+    names = []
+    name_re = re.compile(r'.*import\s+.*')
+    for name, module in proposals:
+        if name_re.match(textmate.CURRENT_LINE):
+            names.append(name)
+        else:
+            names.append(module)
+
+    ui.complete(names, {'initial_filter': current_word, 'extra_chars': "_"})
+
+
+def complete():
+    try:
+        from rope.contrib import codeassist
+    except:
+        textmate.exit_show_tool_tip('Rope module not found, or is out of date!')
+
+    source = sys.stdin.read()
     caret_index = source.find(textmate.CURRENT_LINE) + textmate.LINE_INDEX
+    project = get_project()
+
+    resource = project.get_resource(textmate.FILEPATH.replace(textmate.PROJECT_DIRECTORY, '')[1:])
 
     current_word = textmate.current_word(r"[a-zA-Z_]*", 'both')
 
@@ -36,15 +63,7 @@ def main():
         textmate.exit_insert_text(proposals[0].name.replace(current_word, '', 1))
     else:
         proposals = codeassist.sorted_proposals(proposals)
-        #autoimport.generate_cache()
-        #autoimport.generate_modules_cache(modules)
-        #project.pycore.analyze_module(resource)
         names = [proposal.name for proposal in proposals]
-        #if self.starting.strip() and '.' not in self.expression:
-        #        import_assists = self.autoimport.import_assist(self.starting)
-        #        names.extend(x[0] + ' : ' + x[1] for x in import_assists)
-
-        #plist = "{ menuItems=(%s);}"
         ui.complete(names, {'initial_filter': current_word, 'extra_chars': "_"})
 
 

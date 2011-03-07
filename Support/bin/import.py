@@ -16,6 +16,9 @@ def main():
     
     current_word = textmate.current_word(r"[a-zA-Z_]*", 'both')
     
+    if not current_word:
+        textmate.exit_show_tool_tip('No imports found.')
+    
     proposals = autoimport.import_assist(current_word)
     result = None
 
@@ -37,6 +40,8 @@ def main():
         
     if result:
         insert_import(result, current_word)
+    else:
+        textmate.exit_discard()
 
 
 def insert_import(statement, word):
