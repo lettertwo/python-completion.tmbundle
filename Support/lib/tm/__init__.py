@@ -4,6 +4,7 @@ Many of these methods are ported or adopted from the TextMate support bundle's
 """
 import sys
 import os
+import ui
 
 # Add TM supoprt path.
 SUPPORT_PATH = os.path.join(os.environ["TM_SUPPORT_PATH"], "lib")
@@ -13,6 +14,7 @@ if not SUPPORT_PATH in sys.path:
 # from dialog import menu, get_string
 from tm_helpers import current_word, env_python, sh, sh_escape
 
+import webpreview
 
 # TextMate environment vars
 PROJECT_DIRECTORY = os.environ.get('TM_PROJECT_DIRECTORY', None)

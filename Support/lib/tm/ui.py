@@ -2,9 +2,7 @@ import re
 import tempfile
 import plistlib
 import subprocess
-import textmate
-from dialog import get_string
-from dialog import menu
+import tm
 
 # TODO: rewrite this as pydoc
 # Interactive Code Completion Selector
@@ -32,7 +30,7 @@ from dialog import menu
 # 
 def complete(choices, options = {}):
     
-    if '2' not in textmate.DIALOG:
+    if '2' not in tm.DIALOG:
         raise 'Dialog2 not found.'
     
     if 'initial_filter' not in options:
@@ -40,15 +38,15 @@ def complete(choices, options = {}):
         if 'extra_chars' in options:
             characters += re.escape(options['extra_chars'])
 
-        options['initial_filter'] = textmate.current_word(characters, "left")
+        options['initial_filter'] = tm.current_word(characters, "left")
 
-    command = [textmate.DIALOG, "popup", "--returnChoice"]
+    command = [tm.DIALOG, "popup", "--returnChoice"]
     if "initial_filter" in options and options['initial_filter']:
-        command.append("--alreadyTyped %s" % textmate.sh_escape(options["initial_filter"]))
+        command.append("--alreadyTyped %s" % tm.sh_escape(options["initial_filter"]))
     if "static_prefix" in options and options['static_prefix']:
-        command.append("--staticPrefix %s" % textmate.sh_escape(options["static_prefix"]))
+        command.append("--staticPrefix %s" % tm.sh_escape(options["static_prefix"]))
     if "extra_chars" in options and options['extra_chars']:
-        command.append("--additionalWordCharacters %s" % textmate.sh_escape(options['extra_chars']))
+        command.append("--additionalWordCharacters %s" % tm.sh_escape(options['extra_chars']))
     if "case_insensitive" in options and options['case_insensitive']:
         command.append("--caseInsensitive")
 
@@ -76,6 +74,6 @@ def complete(choices, options = {}):
         f.close()
 
     except Exception as e:
-        textmate.exit_show_tool_tip('ERROR: %s' % e)
+        tm.exit_show_tool_tip('ERROR: %s' % e)
     finally:
         f.close()

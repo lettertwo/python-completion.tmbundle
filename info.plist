@@ -2,8 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>mainMenu</key>
+	<dict>
+		<key>items</key>
+		<array>
+			<string>53EA6676-9DC0-48FE-B109-12F00132C535</string>
+			<string>35279BEC-52AF-4F36-9B9F-E91BE0079719</string>
+			<string>686A91B1-1FA7-4535-BFBC-3DCAC204159A</string>
+			<string>76B6CD14-0D24-46AB-8098-D6CC53453921</string>
+		</array>
+		<key>submenus</key>
+		<dict/>
+	</dict>
 	<key>name</key>
 	<string>Python Completion</string>
+	<key>ordering</key>
+	<array>
+		<string>53EA6676-9DC0-48FE-B109-12F00132C535</string>
+		<string>686A91B1-1FA7-4535-BFBC-3DCAC204159A</string>
+		<string>35279BEC-52AF-4F36-9B9F-E91BE0079719</string>
+		<string>76B6CD14-0D24-46AB-8098-D6CC53453921</string>
+	</array>
 	<key>uuid</key>
 	<string>F98B72C9-4837-4E74-B2A6-BB9E7831C8EB</string>
 </dict>

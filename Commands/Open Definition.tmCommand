@@ -5,18 +5,20 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>runcommand.py import</string>
+	<string>runcommand.py open</string>
+	<key>fallbackInput</key>
+	<string>word</string>
 	<key>input</key>
 	<string>document</string>
 	<key>keyEquivalent</key>
-	<string>@I</string>
+	<string>@D</string>
 	<key>name</key>
-	<string>Import</string>
+	<string>Open Definition</string>
 	<key>output</key>
-	<string>replaceDocument</string>
+	<string>showAsTooltip</string>
 	<key>scope</key>
 	<string>source.python</string>
 	<key>uuid</key>
-	<string>686A91B1-1FA7-4535-BFBC-3DCAC204159A</string>
+	<string>76B6CD14-0D24-46AB-8098-D6CC53453921</string>
 </dict>
 </plist>
